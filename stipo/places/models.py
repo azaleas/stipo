@@ -4,10 +4,10 @@ from django.contrib.auth.models import User
 class Facility(models.Model):
     yelp_id = models.CharField(max_length=300)
     name = models.CharField(max_length=300)
-    rating = models.DecimalField(max_digits=2)
+    rating = models.DecimalField(max_digits=2, decimal_places=1)
     city = models.CharField(max_length=300, db_index = True)
-    url = models.UrlField(max_length=200)
-    image_url = models.UrlField(max_length=200)
+    url = models.URLField(max_length=200)
+    image_url = models.URLField(max_length=200)
     created_date = models.DateTimeField(auto_now_add=True)
     #Data will be cached for 3 hours.
     updated_date = models.DateTimeField(auto_now=True, db_index=True)
@@ -17,6 +17,7 @@ class Facility(models.Model):
         index_together = [
             ["city", "updated_date"]
         ]
+        verbose_name_plural = "Facilities"
 
     def __str__(self):
         return self.name
