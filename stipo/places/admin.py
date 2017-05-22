@@ -4,7 +4,7 @@ from .models import Facility, Attend, YelpToken
 # Register your models here.
 
 class FacilityAdmin(admin.ModelAdmin):
-    list_display = ['name', 'yelp_id', 'rating', 'city', 'updated_date']
+    list_display = ['name', 'yelp_id', 'rating', 'location', 'updated_date']
     list_filter = ['created_date', 'updated_date', 'rating']
 
 admin.site.register(Facility, FacilityAdmin)

@@ -16,7 +16,7 @@ class FacilitySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Facility
-        fields = ['city']
+        fields = ['location']
 
 class YelpTokenSerializer(serializers.ModelSerializer):
 
