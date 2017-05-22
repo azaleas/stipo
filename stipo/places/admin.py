@@ -16,7 +16,7 @@ class AttendAdmin(admin.ModelAdmin):
 admin.site.register(Attend, AttendAdmin)
 
 class YelpTokenAdmin(admin.ModelAdmin):
-    list_display = ['token', 'created_date']
+    list_display = ['token', 'created_date', 'updated_date']
     list_filter = ['created_date']
 
 admin.site.register(YelpToken, YelpTokenAdmin)

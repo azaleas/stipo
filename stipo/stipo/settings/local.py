@@ -42,6 +42,10 @@ SECRET_KEY = get_secret('SECRET_KEY', DEBUG)
 EMAIL_HOST = 'localhost'
 EMAIL_PORT = 1025
 
+# Yelp
+YELP_CLIENT_ID = get_secret('YELP_CLIENT_ID', DEBUG)
+YELP_CLIENT_SECRET = get_secret('YELP_CLIENT_SECRET', DEBUG)
+
 # LOGIN_REDIRECT_URL = 'http://localhost:3000/'
  
 #########################################################

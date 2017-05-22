@@ -7,7 +7,7 @@ TEMPLATE_DEBUG = False
 # CHANGE THE ALLOWED_HOSTS LIST TO FIT YOUR NEEDS
 ALLOWED_HOSTS = ['.stipoapp.herokuapp.com', 'localhost', '127.0.0.1', '[::1]']
 
-ADMINS = [('azaleas', 'azaleas@2die4.com')]
+ADMINS = [(ADMIN_USER, ADMIN_EMAIL)]
 
 # Email
 EMAIL_HOST = 'smtp.yandex.ru'
@@ -17,6 +17,11 @@ EMAIL_HOST_USER = os.environ.get('EMAIL_USER')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASS')
 DEFAULT_FROM_EMAIL = os.environ.get('EMAIL_USER')
 SERVER_EMAIL = os.environ.get('EMAIL_USER')
+
+# Yelp
+
+YELP_CLIENT_ID = os.environ.get('YELP_CLIENT_ID')
+YELP_CLIENT_SECRET = os.environ.get('YELP_CLIENT_SECRET')
 
 # Database
 
