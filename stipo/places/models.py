@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class Facility(models.Model):
-    yelp_id = models.CharField(max_length=300)
+    yelp_id = models.CharField(max_length=300, unique=True)
     name = models.CharField(max_length=300)
     rating = models.DecimalField(max_digits=2, decimal_places=1)
     location = models.CharField(max_length=300, db_index = True)

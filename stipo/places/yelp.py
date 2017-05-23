@@ -15,7 +15,7 @@ from datetime import date, timedelta
 from django.core.exceptions import ObjectDoesNotExist
 from django.conf import settings
 
-from .models import YelpToken
+from .models import YelpToken, Facility
 
 # settings.YELP_CLIENT_ID
 # settings.YELP_CLIENT_SECRET
@@ -56,6 +56,30 @@ def obtain_bearer_token(host=API_HOST, path=TOKEN_PATH):
     YelpToken.objects.update_or_create(token=bearer_token)
     return bearer_token
 
+def request(host, path, bearer_token, url_params=None):
+    """Given a bearer token, send a GET request to the API.
+    Args:
+        host (str): The domain host of the API.
+        path (str): The path of the API after the domain.
+        bearer_token (str): OAuth bearer token, obtained using client_id and client_secret.
+        url_params (dict): An optional set of query parameters in the request.
+    Returns:
+        dict: The JSON response from the request.
+    Raises:
+        HTTPError: An error occurs from the HTTP request.
+    """
+    url_params = url_params or {}
+    url = '{0}{1}'.format(host, quote(path.encode('utf8')))
+    headers = {
+        'Authorization': 'Bearer %s' % bearer_token,
+    }
+
+    print(u'Querying {0} ...'.format(url))
+
+    response = requests.request('GET', url, headers=headers, params=url_params)
+
+    return response.json()
+
 def search(bearer_token, location):
     """Query the Search API by a search location.
     Args:
@@ -84,9 +108,22 @@ def query_api(location):
         bearer_token = bearer_token_object.token
     except ObjectDoesNotExist:
         bearer_token = obtain_bearer_token()
-    
-    print('bearer\n', bearer_token)
 
-    # response = search(bearer_token, location)
+    response = search(bearer_token, location)
 
-    # print('response\n', response)
+    if 'LOCATION_NOT_FOUND' in response:
+        """
+        {'code': 'LOCATION_NOT_FOUND', 'description': 'Could not execute search, try specifying a more exact location.'}
+        """
+        print('error response:\n', response['error'])
+    else:
+        for business in response['businesses']:
+            if(business['location']['city'].lower() == location.lower()):
+                Facility.objects.update_or_create(
+                    yelp_id = business['id'],
+                    name = business['name'],
+                    rating = business['rating'],
+                    location = business['location']['city'],
+                    url = business['url'],
+                    image_url = business['image_url']
+                )
