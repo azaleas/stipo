@@ -7,16 +7,23 @@ class AttendSerializer(serializers.ModelSerializer):
    
     class Meta:
         model = Attend
-        fields = ['id', 'att ender', 'facility', 
+        fields = ['id', 'attender', 'facility', 
         'is_going', 'created_date']
+
+class AttendSerializerReadOnly(serializers.ModelSerializer):
+   
+    class Meta:
+        model = Attend
+        fields = ['is_going', 'created_date']
 
 class FacilitySerializer(serializers.ModelSerializer):
 
-    # attends = AttendSerializer(many=True)
+    attends = AttendSerializerReadOnly(many=True, read_only=True)
 
     class Meta:
         model = Facility
-        fields = ['location']
+        fields = ['id', 'name', 'location', 'rating', 'url', 'image_url', 'attends']
+        read_only_fields = ['name', 'rating', 'url', 'image_url', 'attends']
 
 class YelpTokenSerializer(serializers.ModelSerializer):
 

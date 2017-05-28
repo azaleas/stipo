@@ -57,8 +57,6 @@ REST_FRAMEWORK = {
     ),
 }
 
-# LOGIN_REDIRECT_URL = '/close'
-
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
