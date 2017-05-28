@@ -5,6 +5,8 @@ from ..models import Attend, Facility, YelpToken
 
 class AttendSerializer(serializers.ModelSerializer):
    
+    is_going = serializers.BooleanField(required=True)
+
     class Meta:
         model = Attend
         fields = ['id', 'attender', 'facility', 
@@ -14,7 +16,7 @@ class AttendSerializerReadOnly(serializers.ModelSerializer):
    
     class Meta:
         model = Attend
-        fields = ['is_going', 'created_date']
+        fields = ['attender', 'is_going', 'created_date']
 
 class FacilitySerializer(serializers.ModelSerializer):
 

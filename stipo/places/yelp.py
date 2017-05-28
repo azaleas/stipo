@@ -14,6 +14,7 @@ from datetime import date, timedelta
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.conf import settings
+from django.utils import timezone
 
 from .models import YelpToken, Facility
 
@@ -103,22 +104,28 @@ def query_api(location):
         """
         Yelp token should be updated every 180 days
         """
-        date_cached = date.today() - timedelta(days=180)
+        date_cached = timezone.now() - timedelta(days=180)
         bearer_token_object = YelpToken.objects.get(updated_date__gte=date_cached)
         bearer_token = bearer_token_object.token
     except ObjectDoesNotExist:
         bearer_token = obtain_bearer_token()
+        return "error"
 
     response = search(bearer_token, location)
 
-    if 'LOCATION_NOT_FOUND' in response:
-        """
-        {'code': 'LOCATION_NOT_FOUND', 'description': 'Could not execute search, try specifying a more exact location.'}
-        """
-        print('error response:\n', response['error'])
-    else:
+    try:
+        if 'LOCATION_NOT_FOUND' in response['error']['code']:
+            """
+            {'code': 'LOCATION_NOT_FOUND', 'description': 'Could not execute search, try specifying a more exact location.'}
+            """
+            print('error response:\n', response['error'])
+            return "not found"
+    except:
         for business in response['businesses']:
+            wrong_city = True
             if(business['location']['city'].lower() == location.lower()):
+                if wrong_city:
+                    wrong_city = False
                 Facility.objects.update_or_create(
                     yelp_id = business['id'],
                     name = business['name'],
@@ -127,3 +134,7 @@ def query_api(location):
                     url = business['url'],
                     image_url = business['image_url']
                 )
+        if wrong_city:
+            return "not found"
+        else:
+            return "success"
