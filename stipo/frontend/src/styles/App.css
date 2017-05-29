@@ -30,7 +30,7 @@
     text-align: center;
 }
 
-.app-desc a {
+.app-desc a, .facility-info--title a {
     text-decoration: none;
     margin-left: 5px;
     color: lightblue;
@@ -38,7 +38,7 @@
     position: relative;
 }
 
-.app-desc a:after {
+.app-desc a:after, .facility-info--title a:after {
     content: "";
     position: absolute;
     left: 0;
@@ -54,7 +54,7 @@
             transition: all 0.2s linear;
 }
 
-.app-desc a:hover:after {
+.app-desc a:hover:after, .facility-info--title a:hover:after {
     width: 100%;
 }
 
@@ -101,4 +101,26 @@
     font-size: 0.8em;
     font-weight: 600;
     text-align: center;
+}
+
+.facility-info--stat {
+    font-weight: 600;
+    margin-left: 5px;
+    color: orange;
+}
+
+.facility-infoblock {
+    border-bottom: 1px solid #ccc !important;
+}
+
+.facility-infoblock img {
+    top: 50% !important;
+    width: 50px !important;
+    height: 50px !important;
+    left: 5px !important;
+    -webkit-transform: translateY(-50%);
+       -moz-transform: translateY(-50%);
+        -ms-transform: translateY(-50%);
+         -o-transform: translateY(-50%);
+            transform: translateY(-50%);
 }
