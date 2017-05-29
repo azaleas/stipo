@@ -85,7 +85,10 @@ class App extends Component {
                         <Route 
                             exact path="/" 
                             render={props => 
-                                <ListContainer fetchingToken={this.state.fetchingToken} {...props} />
+                                <ListContainer 
+                                    fetchingToken={this.state.fetchingToken}
+                                    twitterLoginStart={this.twitterLoginStart}
+                                    {...props} />
                             } />
                         <Route path="/twitter_logged_in/" component={LoginTwitter} />
                         <Route path="/logout" component={Logout} />

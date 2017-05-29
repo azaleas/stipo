@@ -9,7 +9,9 @@ class LoginTwitter extends Component {
 
     componentWillMount(){
         const parsed = queryString.parse(location.search);
-        api.saveTwitterTokens(parsed.user_oauth_token, parsed.user_oauth_verifier, parsed.user)
+        api.saveTwitterTokens(parsed.user_oauth_token, 
+            parsed.user_oauth_verifier, 
+            parsed.user, parsed.user_id)
         window.open('', '_self', ''); window.close();
     }
 

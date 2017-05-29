@@ -2,13 +2,14 @@ from django.conf import settings
 from allauth.account.adapter import DefaultAccountAdapter
 from allauth.socialaccount.models import SocialToken
 
-from polls.variables import twitter_login_url
+from places.variables import twitter_login_url
 
 class AccountAdapter(DefaultAccountAdapter):
 
     def get_login_redirect_url(self, request):
         request_data = request.GET
         user = request.user
+        user_id = str(user.id)
         user_tokens = SocialToken.objects.get(
                         account__user=user, account__provider='twitter'
                     )
@@ -16,6 +17,6 @@ class AccountAdapter(DefaultAccountAdapter):
         user_oauth_verifier = user_tokens.token_secret
         get_vars = "user_oauth_token=" + user_oauth_token \
                     + "&user_oauth_verifier=" + user_oauth_verifier \
-                    + "&user=" + user.username
+                    + "&user=" + user.username + "&user_id=" + user_id
         path = twitter_login_url + "?" + get_vars
         return path

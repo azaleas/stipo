@@ -40,6 +40,7 @@ const ListComponent = (props) => {
                                         trackSwitchedStyle={{
                                             backgroundColor: "rgb(245, 216, 162)",
                                         }}
+                                        onToggle={props.toggleAttend}
                                      />
                                 }
                                 className="facility-infoblock"
@@ -60,7 +61,50 @@ const ListComponent = (props) => {
                         ))
                     )
                     :(
-                        <p></p>
+                        props.data.map((el, index) => (
+                            <ListItem
+                                key={el.id}
+                                leftAvatar={<Avatar src={el.image_url} />}
+                                primaryText={
+                                    <p className="facility-info--title">
+                                        {el.name} | <a href={el.url} target="_blank">Yelp Link</a>
+                                    </p>
+                                }
+                                secondaryTextLines={2}
+                                disabled
+                                rightToggle={
+                                    <Toggle
+                                        thumbStyle={{
+                                            backgroundColor: "rgb(245, 216, 162)",
+                                        }}
+                                        thumbSwitchedStyle={{
+                                            backgroundColor: "orange",
+                                        }}
+                                        trackStyle={{
+                                            backgroundColor: "rgba(255, 165, 0, 0.5)",
+                                        }}
+                                        trackSwitchedStyle={{
+                                            backgroundColor: "rgb(245, 216, 162)",
+                                        }}
+                                        onToggle={props.toggleAttend}
+                                     />
+                                }
+                                className="facility-infoblock"
+                                secondaryText={
+                                    <p className="facility-info">
+                                        Total going: 
+                                        <span className="facility-info--stat">
+                                            {el.attends.length}
+                                        </span>
+                                        <br/>
+                                        Rating: 
+                                        <span className="facility-info--stat">
+                                            {el.rating}
+                                        </span>
+                                    </p>
+                                }
+                            />
+                        ))
                     )
                 }
             </List>
@@ -71,6 +115,7 @@ const ListComponent = (props) => {
 ListComponent.propTypes = {
     className: PropTypes.string,
     data: PropTypes.array,
+    toggleAttend: PropTypes.func,
 };
 
 export default ListComponent;

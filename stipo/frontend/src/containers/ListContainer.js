@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
+import Link from 'react-router-dom/Link';
+
 import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
@@ -82,6 +84,13 @@ class ListContainer extends Component {
         }
     }
 
+    handletoggleAttend = (event, isInputChecked) =>{
+        if (!api.isLoggedIn()){
+            event.preventDefault();
+            this.props.twitterLoginStart();
+        }
+    }
+
 
     render(){
         return( 
@@ -96,6 +105,20 @@ class ListContainer extends Component {
                                 Yelp Fusion API
                         </a>
                     </p>
+                    {
+                        api.isLoggedIn()
+                        ?(
+                            <p className="app-user">Hello, {api.getUsername()}. 
+                                <Link 
+                                    to="/logout">
+                                    Logout
+                                </Link>
+                            </p>
+                        )
+                        :(
+                            <p></p>
+                        )
+                    }
                     <div className="app-searchblock">
                         <div className="app-searchblock--textinput">
                             <TextField
@@ -134,6 +157,7 @@ class ListContainer extends Component {
                                 ? (
                                     <ListComponent 
                                         data={this.state.data}
+                                        toggleAttend={this.handletoggleAttend}
                                     />
                                 )
                                 :(
@@ -162,6 +186,7 @@ class ListContainer extends Component {
 ListContainer.propTypes = {
     className: PropTypes.string,
     fetchingToken: PropTypes.bool,
+    twitterLoginStart: PropTypes.func,
 };
 
 export default ListContainer;

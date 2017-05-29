@@ -10,6 +10,11 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated , AllowAny
 from rest_framework.decorators import detail_route, list_route
 
+# For twitter
+from allauth.socialaccount.providers.twitter.views import TwitterOAuthAdapter
+from rest_auth.views import LoginView
+from rest_auth.social_serializers import TwitterLoginSerializer
+
 from ..yelp import query_api
 
 from ..models import Attend, Facility
@@ -17,6 +22,13 @@ from .serializers import AttendSerializer, \
 FacilitySerializer
 
 from .helpers import get_location_from_db, get_location_json
+
+class TwitterLogin(LoginView):
+    """
+    Twitter OAuth View/django-rest-auth
+    """
+    serializer_class = TwitterLoginSerializer
+    adapter_class = TwitterOAuthAdapter
 
 class PlacesViewSet(viewsets.ViewSet):
     """

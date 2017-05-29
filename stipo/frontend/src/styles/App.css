@@ -30,7 +30,7 @@
     text-align: center;
 }
 
-.app-desc a, .facility-info--title a {
+.app-desc a, .facility-info--title a, .app-user a {
     text-decoration: none;
     margin-left: 5px;
     color: lightblue;
@@ -38,7 +38,7 @@
     position: relative;
 }
 
-.app-desc a:after, .facility-info--title a:after {
+.app-desc a:after, .facility-info--title a:after, .app-user a:after {
     content: "";
     position: absolute;
     left: 0;
@@ -54,8 +54,14 @@
             transition: all 0.2s linear;
 }
 
-.app-desc a:hover:after, .facility-info--title a:hover:after {
+.app-desc a:hover:after, .facility-info--title a:hover:after, .app-user a:hover:after {
     width: 100%;
+}
+
+.app-user {
+    text-align: center;
+    font-size: 0.9em;
+    color: orange;
 }
 
 .app-searchblock {

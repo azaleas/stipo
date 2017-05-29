@@ -71,13 +71,15 @@ class Api{
         }
     }
 
-    saveTwitterTokens(oath_token, oauth_secret, user){
+    saveTwitterTokens(oath_token, oauth_secret, user, user_id){
         localStorage.removeItem('oath_token');
         localStorage.removeItem('oauth_secret');
         localStorage.removeItem('user');
+        localStorage.removeItem('user_id');
         localStorage.setItem('oath_token', oath_token);
         localStorage.setItem('oauth_secret', oauth_secret);
         localStorage.setItem('user', user);
+        localStorage.setItem('user_id', user_id);
     }
 
     handleLogout(){
@@ -85,6 +87,7 @@ class Api{
         localStorage.removeItem('oauth_secret');
         localStorage.removeItem('token');
         localStorage.removeItem('user');
+        localStorage.removeItem('user_id');
         this.token = null;
         let URL = `${API_STEM_AUTH}/logout/`;
         let config = {
@@ -107,6 +110,9 @@ class Api{
 
     getUsername(){
         return localStorage.getItem('user');
+    }
+    getUserId(){
+        return localStorage.getItem('user_id');
     }
 }
 
