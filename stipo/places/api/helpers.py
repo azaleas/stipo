@@ -9,9 +9,9 @@ from .serializers import FacilitySerializer
 def get_location_from_db(location):
     """
     Returns facilities matching the location 
-    and updated no more than 3 hours ago
+    and updated no more than 24 hours ago
     """
-    date_cached = timezone.now() - timedelta(seconds=3*60*60)
+    date_cached = timezone.now() - timedelta(days=1)
 
     places = Facility.objects.filter(
         location=location.title(), 
