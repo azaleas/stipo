@@ -103,6 +103,14 @@
     text-align: center;
 }
 
+.search-results>p {
+    font-size: 0.9em;
+}
+
+.facility-info--title {
+    margin-bottom: 0;
+}
+
 .facility-info--stat {
     font-weight: 600;
     margin-left: 5px;
@@ -118,6 +126,14 @@
     width: 50px !important;
     height: 50px !important;
     left: 5px !important;
+    -webkit-transform: translateY(-50%);
+       -moz-transform: translateY(-50%);
+        -ms-transform: translateY(-50%);
+         -o-transform: translateY(-50%);
+            transform: translateY(-50%);
+}
+.facility-infoblock>div {
+    top: 50% !important;
     -webkit-transform: translateY(-50%);
        -moz-transform: translateY(-50%);
         -ms-transform: translateY(-50%);
