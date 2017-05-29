@@ -25,7 +25,7 @@ class Api{
                 }
             )
             .then((response) => {
-                return response;
+                return response.data;
             })
             .catch((error) => {
                 if (error.response.status === 404){

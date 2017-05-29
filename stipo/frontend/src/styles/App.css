@@ -29,6 +29,35 @@
     font-size: 0.8em;
     text-align: center;
 }
+
+.app-desc a {
+    text-decoration: none;
+    margin-left: 5px;
+    color: lightblue;
+    font-weight: 600;
+    position: relative;
+}
+
+.app-desc a:after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    height: 2px;
+    width: 0;
+    background-color: orange;
+    -webkit-transition: all 0.2s linear;
+       -moz-transition: all 0.2s linear;
+        -ms-transition: all 0.2s linear;
+         -o-transition: all 0.2s linear;
+            transition: all 0.2s linear;
+}
+
+.app-desc a:hover:after {
+    width: 100%;
+}
+
 .app-searchblock {
     display: flex;
     -webkit-flex-direction: row;
@@ -56,4 +85,20 @@
 
 .search-notfound span {
     font-weight: 600;
+}
+
+.app-content {
+    position: relative;
+    height: 75%;
+    height: 75vh;
+    -ms-overflow-y: auto;
+       overflow-y: auto;   
+}
+
+.search-progress {
+    max-width: 400px;
+    margin: 2em auto;
+    font-size: 0.8em;
+    font-weight: 600;
+    text-align: center;
 }

@@ -4,11 +4,14 @@ import PropTypes from 'prop-types';
 import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
+import LinearProgress from 'material-ui/LinearProgress';
 import Divider from 'material-ui/Divider';
 import {orange500} from 'material-ui/styles/colors';
 
 
 import {api} from './../utils/Api';
+
+import ListComponent from './../components/ListComponent';
 
 class ListContainer extends Component {
     
@@ -18,6 +21,9 @@ class ListContainer extends Component {
             searchInput: '',
             searchInputError: false,
             notFound: false,
+            noData: true,
+            fetchingData: false,
+            data: {},
         }
     }
 
@@ -40,13 +46,15 @@ class ListContainer extends Component {
     }
 
     onSearchSubmit = (event) =>{
-        this.setState({
-            notFound: false,
-        });
         this.searchSubmit();
     }
 
     searchSubmit = () =>{
+        this.setState({
+            notFound: false,
+            noData: true,
+            fetchingData: true,
+        });
         if (!this.state.searchInput){
             this.setState({
                 searchInputError: true,
@@ -61,6 +69,14 @@ class ListContainer extends Component {
                             notFound: true,
                         });
                     }
+                    else{
+                        this.setState({
+                            notFound: false,
+                            data: response,
+                            noData: false,
+                            fetchingData: false,
+                        })
+                    }
                     console.log(response);
                 })
         }
@@ -72,7 +88,14 @@ class ListContainer extends Component {
             <div>
                 <Paper className="listcontainer" zDepth={1} >
                     <h3 className="app-title">Stipo</h3>
-                    <p className="app-desc">SPA, getting data from Yelp Fusion API</p>
+                    <p className="app-desc">
+                        SPA, getting data from 
+                        <a 
+                            target="_blank"
+                            href="https://www.yelp.com/developers/documentation/v3">
+                                Yelp Fusion API
+                        </a>
+                    </p>
                     <div className="app-searchblock">
                         <div className="app-searchblock--textinput">
                             <TextField
@@ -97,18 +120,39 @@ class ListContainer extends Component {
                             />
                         </div>
                     </div>
-                    <p className="app-desc">*Data is cached for 3 hours 
+                    <p className="app-desc">*Data from Yelp API is cached for 24 hours 
                     and list of people attending is updated at 5:00 a.m. (browser time).</p>
                     <Divider/>
-                    {
-                        this.state.notFound
-                        ? (
-                            <p className="search-notfound">Nothing was found for: <span>{this.state.searchInput}</span></p>
-                        )
-                        :(
-                            <div></div>
-                        )
-                    }
+                    <div className="app-content">
+                        {
+                            this.state.notFound
+                            ? (
+                                <p className="search-notfound">Nothing was found for: <span>{this.state.searchInput}</span></p>
+                            )
+                            :(
+                                !this.state.noData
+                                ? (
+                                    <ListComponent 
+                                        data={this.state.data}
+                                    />
+                                )
+                                :(
+                                    this.state.fetchingData
+                                    ?(
+                                        <div className="search-progress">
+                                            <LinearProgress 
+                                                mode="indeterminate"
+                                                color={orange500} />
+                                            <p>Fetching the data...</p>
+                                        </div>
+                                    )
+                                    :(
+                                        <p></p>
+                                    )
+                                )
+                            )
+                        }
+                    </div>
                 </Paper>
             </div>
         )
