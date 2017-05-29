@@ -27,7 +27,20 @@ class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            fetchingToken: false,
+            loggedIn: false,
+        }
+    }
+
+    componentDidMount(){
+        if(api.isLoggedIn()){
+            this.setState({
+                loggedIn: true,
+            });
+        }
+        else {
+            this.setState({
+                loggedIn: false,
+            });
         }
     }
 
@@ -55,13 +68,6 @@ class App extends Component {
     }
 
     twitterLogin(){
-        /*Remove login text while loggging in is in process*/
-        let user = localStorage.getItem('user');
-        if(user !== '' && typeof user !== 'undefined' && user !== null){
-            this.setState({
-                fetchingToken: true,
-            });
-        }
         api.handleTwitterLogin()
             .then((response) =>{
                 if(response === 'error'){
@@ -71,8 +77,8 @@ class App extends Component {
                 }
                 else if(response === 'success'){
                     this.setState({
-                        fetchingToken: false,
-                    });
+                        loggedIn: true,
+                    })
                 }
             })
     }
@@ -86,7 +92,7 @@ class App extends Component {
                             exact path="/" 
                             render={props => 
                                 <ListContainer 
-                                    fetchingToken={this.state.fetchingToken}
+                                    loggedIn={this.state.loggedIn}
                                     twitterLoginStart={this.twitterLoginStart}
                                     {...props} />
                             } />

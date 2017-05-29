@@ -8,6 +8,8 @@ import Avatar from 'material-ui/Avatar';
 import Toggle from 'material-ui/Toggle';
 
 const ListComponent = (props) => {
+    console.log(props.data);
+    console.log(api.isLoggedIn());
     return (
         <div className="search-results">
             <p>Search returns 20 results</p>

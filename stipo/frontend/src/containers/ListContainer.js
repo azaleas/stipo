@@ -29,6 +29,12 @@ class ListContainer extends Component {
         }
     }
 
+    componentWillReceiveProps(nextProps){
+        if(nextProps.loggedIn && this.state.searchInput){
+            this.searchSubmit();
+        }
+    }
+
     onSearchChange = (event) =>{
         if (this.state.notFound){
             this.setState({
@@ -52,17 +58,17 @@ class ListContainer extends Component {
     }
 
     searchSubmit = () =>{
-        this.setState({
-            notFound: false,
-            noData: true,
-            fetchingData: true,
-        });
         if (!this.state.searchInput){
             this.setState({
                 searchInputError: true,
             });
         }
         else{
+            this.setState({
+                notFound: false,
+                noData: true,
+                fetchingData: true,
+            });
             let searchInput = this.state.searchInput;
             api.searchLocation(searchInput)
                 .then((response) => {
@@ -79,15 +85,16 @@ class ListContainer extends Component {
                             fetchingData: false,
                         })
                     }
-                    console.log(response);
                 })
         }
     }
 
     handletoggleAttend = (event, isInputChecked) =>{
         if (!api.isLoggedIn()){
-            event.preventDefault();
             this.props.twitterLoginStart();
+        }
+        else{
+            
         }
     }
 
@@ -185,7 +192,7 @@ class ListContainer extends Component {
 
 ListContainer.propTypes = {
     className: PropTypes.string,
-    fetchingToken: PropTypes.bool,
+    loggedIn: PropTypes.bool,
     twitterLoginStart: PropTypes.func,
 };
 
