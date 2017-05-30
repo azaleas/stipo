@@ -37,6 +37,26 @@ class Api{
             })
     }
 
+    attendLocation(facilityId, toggleValue){
+        let URL = `${API_STEM}/places/${facilityId}/attend/`;
+        let config = {
+            headers: {"Authorization": "Token " + this.token},
+        };
+        return axios.post(
+                URL, 
+                {
+                    "is_going": toggleValue,
+                },
+                config
+            )
+            .then((response) => {
+                return response.data;
+            })
+            .catch((error) => {
+                console.warn(error.response);
+            })
+    }
+
     handleTwitterLogin(){
         let URL = `${API_STEM_AUTH}/twitter/`;
 

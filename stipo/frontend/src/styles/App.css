@@ -95,8 +95,8 @@
 
 .app-content {
     position: relative;
-    height: 75%;
-    height: 75vh;
+    height: 70%;
+    height: 70vh;
     -ms-overflow-y: auto;
        overflow-y: auto;   
 }

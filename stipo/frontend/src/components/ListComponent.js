@@ -31,10 +31,8 @@ const ListComponent = (props) => {
         user_id = api.getUserId();
     }
     updateTime = moment.utc(updateTime);
-    console.log(props.data);
     return (
         <div className="search-results">
-            <p>Search returns 20 results</p>
             <List>
                 {
                     !api.isLoggedIn()
@@ -104,11 +102,14 @@ const ListComponent = (props) => {
                                     let attendTime = new Date(el.time);
                                     if (attendTime >= updateTime && el.is_going === true){
                                         totalGoing++;
-                                    }
-                                    if (parseInt(user_id) === parseInt(el.user) && el.is_going === true){
-                                        userGoing = true;
+                                        if(parseInt(user_id, 10) === parseInt(el.user, 10)){
+                                            userGoing = true;
+                                        }
                                     }
                                 });
+                            }
+                            if(props.totalGoing[el.id] >= 0){
+                                totalGoing = props.totalGoing[el.id];
                             }
                             return(
                                 <ListItem
@@ -135,8 +136,10 @@ const ListComponent = (props) => {
                                             trackSwitchedStyle={{
                                                 backgroundColor: "rgb(245, 216, 162)",
                                             }}
-                                            toggled={userGoing ? true : false}
-                                            onToggle={props.toggleAttend}
+                                            defaultToggled={userGoing ? true : false}
+                                            onToggle={(event, isInputChecked) => {
+                                                props.toggleAttend(el.id, isInputChecked, totalGoing);
+                                            }}
                                          />
                                     }
                                     className="facility-infoblock"
@@ -167,6 +170,7 @@ ListComponent.propTypes = {
     className: PropTypes.string,
     data: PropTypes.array,
     toggleAttend: PropTypes.func,
+    totalGoing: PropTypes.object,
 };
 
 export default ListComponent;

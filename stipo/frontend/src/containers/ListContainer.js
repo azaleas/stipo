@@ -26,6 +26,7 @@ class ListContainer extends Component {
             noData: true,
             fetchingData: false,
             data: {},
+            totalGoing: {},
         }
     }
 
@@ -33,6 +34,10 @@ class ListContainer extends Component {
         if(nextProps.loggedIn && this.state.searchInput){
             this.searchSubmit();
         }
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.fetchDataTimer);
     }
 
     onSearchChange = (event) =>{
@@ -64,6 +69,8 @@ class ListContainer extends Component {
             });
         }
         else{
+            this.stopToggle = true;
+            clearInterval(this.fetchDataTimer);
             this.setState({
                 notFound: false,
                 noData: true,
@@ -75,6 +82,7 @@ class ListContainer extends Component {
                     if (response === 404){
                         this.setState({
                             notFound: true,
+                            fetchingData: false,
                         });
                     }
                     else{
@@ -83,18 +91,55 @@ class ListContainer extends Component {
                             data: response,
                             noData: false,
                             fetchingData: false,
+                            totalGoing: {},
                         })
+                        this.stopToggle = false;
+                        this.fetchDataTimer = setInterval(() => {
+                            api.searchLocation(searchInput)
+                            .then((response) => {
+                                this.setState({
+                                    data: response,
+                                });
+                            })
+                        }, 3000);
                     }
                 })
         }
     }
 
-    handletoggleAttend = (event, isInputChecked) =>{
+    handletoggleAttend = (facilityId, toggleValue, totalGoing) =>{
         if (!api.isLoggedIn()){
             this.props.twitterLoginStart();
         }
-        else{
-            
+        else if(api.isLoggedIn && !this.stopToggle){
+            clearInterval(this.fetchDataTimer);
+            let totalGoingGroup = Object.assign({}, this.state.totalGoing);
+            if(toggleValue){
+                totalGoingGroup[facilityId] = totalGoing + 1;
+            }
+            else if(!toggleValue){
+                totalGoingGroup[facilityId] = totalGoing - 1;   
+            }
+            this.setState({
+                totalGoing: totalGoingGroup,
+            })
+            api.attendLocation(facilityId, toggleValue)
+                .then((response) => {
+                    if (response === "saved"){
+                        let searchInput = this.state.searchInput;
+                        this.fetchDataTimer = setInterval(() => {
+                            api.searchLocation(searchInput)
+                                .then((response) => {
+                                    let totalGoingGroup = Object.assign({}, this.state.totalGoing);
+                                    totalGoingGroup[facilityId] = {};   
+                                    this.setState({
+                                        totalGoing: totalGoingGroup,
+                                        data: response,
+                                    });
+                                })
+                        }, 3000);
+                    }
+                })
         }
     }
 
@@ -152,6 +197,7 @@ class ListContainer extends Component {
                     </div>
                     <p className="app-desc">*Data from Yelp API is cached for 24 hours 
                     and list of people attending is updated at 5:00 a.m. (browser time).</p>
+                    <p className="app-desc">*Search returns 20 results.</p>
                     <Divider/>
                     <div className="app-content">
                         {
@@ -165,6 +211,7 @@ class ListContainer extends Component {
                                     <ListComponent 
                                         data={this.state.data}
                                         toggleAttend={this.handletoggleAttend}
+                                        totalGoing={this.state.totalGoing}
                                     />
                                 )
                                 :(

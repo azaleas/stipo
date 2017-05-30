@@ -80,7 +80,7 @@ class PlacesViewSet(viewsets.ViewSet):
     )
     def attend(self, request, pk):
         try:
-            if request.data['is_going']:
+            if request.data['is_going'] != "" and request.data['is_going'] != None:
                 is_going = request.data['is_going']
         except:
             return Response("is_going field is required", status.HTTP_400_BAD_REQUEST)
