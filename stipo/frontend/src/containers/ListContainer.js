@@ -131,7 +131,7 @@ class ListContainer extends Component {
                             api.searchLocation(searchInput)
                                 .then((response) => {
                                     let totalGoingGroup = Object.assign({}, this.state.totalGoing);
-                                    totalGoingGroup[facilityId] = {};   
+                                    totalGoingGroup[facilityId] = -1;   
                                     this.setState({
                                         totalGoing: totalGoingGroup,
                                         data: response,
