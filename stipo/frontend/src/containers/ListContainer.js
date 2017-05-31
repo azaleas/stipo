@@ -36,8 +36,13 @@ class ListContainer extends Component {
         }
     }
 
+    componentDidMount(){
+        this.unmounted = false;
+    }
+
     componentWillUnmount() {
         clearInterval(this.fetchDataTimer);
+        this.unmounted = true;
     }
 
     onSearchChange = (event) =>{
@@ -63,83 +68,95 @@ class ListContainer extends Component {
     }
 
     searchSubmit = () =>{
-        if (!this.state.searchInput){
-            this.setState({
-                searchInputError: true,
-            });
-        }
-        else{
-            this.stopToggle = true;
-            clearInterval(this.fetchDataTimer);
-            this.setState({
-                notFound: false,
-                noData: true,
-                fetchingData: true,
-            });
-            let searchInput = this.state.searchInput;
-            api.searchLocation(searchInput)
-                .then((response) => {
-                    if (response === 404){
-                        this.setState({
-                            notFound: true,
-                            fetchingData: false,
-                        });
-                    }
-                    else{
-                        this.setState({
-                            notFound: false,
-                            data: response,
-                            noData: false,
-                            fetchingData: false,
-                            totalGoing: {},
-                        })
-                        this.stopToggle = false;
-                        this.fetchDataTimer = setInterval(() => {
-                            api.searchLocation(searchInput)
-                            .then((response) => {
+        if (!this.unmounted){
+            if (!this.state.searchInput){
+                this.setState({
+                    searchInputError: true,
+                });
+            }
+            else{
+                this.stopToggle = true;
+                clearInterval(this.fetchDataTimer);
+                this.setState({
+                    notFound: false,
+                    noData: true,
+                    fetchingData: true,
+                });
+                let searchInput = this.state.searchInput;
+                if(!this.unmounted){
+                    api.searchLocation(searchInput)
+                        .then((response) => {
+                            if (response === 404){
                                 this.setState({
-                                    data: response,
+                                    notFound: true,
+                                    fetchingData: false,
                                 });
-                            })
-                        }, 3000);
-                    }
-                })
+                            }
+                            else{
+                                this.setState({
+                                    notFound: false,
+                                    data: response,
+                                    noData: false,
+                                    fetchingData: false,
+                                    totalGoing: {},
+                                })
+                                this.stopToggle = false;
+                                this.fetchDataTimer = setInterval(() => {
+                                    if (!this.unmounted){
+                                        api.searchLocation(searchInput)
+                                            .then((response) => {
+                                                this.setState({
+                                                    data: response,
+                                                });
+                                            })
+                                    }
+                                }, 3000);
+                            }
+                        })
+                }
+            }
         }
     }
 
     handletoggleAttend = (facilityId, toggleValue, totalGoing) =>{
-        if (!api.isLoggedIn()){
-            this.props.twitterLoginStart();
-        }
-        else if(api.isLoggedIn && !this.stopToggle){
-            clearInterval(this.fetchDataTimer);
-            let totalGoingGroup = Object.assign({}, this.state.totalGoing);
-            if(toggleValue){
-                totalGoingGroup[facilityId] = totalGoing + 1;
+        if(!this.unmounted){
+            if (!api.isLoggedIn()){
+                this.props.twitterLoginStart();
             }
-            else if(!toggleValue){
-                totalGoingGroup[facilityId] = totalGoing - 1;   
-            }
-            this.setState({
-                totalGoing: totalGoingGroup,
-            })
-            api.attendLocation(facilityId, toggleValue)
-                .then((response) => {
-                    if (response === "saved"){
-                        let searchInput = this.state.searchInput;
-                        this.fetchDataTimer = setInterval(() => {
-                            api.searchLocation(searchInput)
-                                .then((response) => {
-                                    let totalGoingGroup = Object.assign({}, this.state.totalGoing);
-                                    totalGoingGroup[facilityId] = -1;   
-                                    this.setState({
-                                        totalGoing: totalGoingGroup,
-                                        data: response,
-                                    });
-                                })
-                        }, 3000);
-                    }
+            else if(api.isLoggedIn() && !this.stopToggle){
+                clearInterval(this.fetchDataTimer);
+                let totalGoingGroup = Object.assign({}, this.state.totalGoing);
+                if(toggleValue){
+                    totalGoingGroup[facilityId] = totalGoing + 1;
+                }
+                else if(!toggleValue){
+                    totalGoingGroup[facilityId] = totalGoing - 1;   
+                }
+                this.setState({
+                    totalGoing: totalGoingGroup,
                 })
+                if (!this.unmounted){
+                    api.attendLocation(facilityId, toggleValue)
+                        .then((response) => {
+                            if (response === "saved"){
+                                let searchInput = this.state.searchInput;
+                                this.fetchDataTimer = setInterval(() => {
+                                    if(!this.unmounted){
+                                        api.searchLocation(searchInput)
+                                            .then((response) => {
+                                                let totalGoingGroup = Object.assign({}, this.state.totalGoing);
+                                                totalGoingGroup[facilityId] = -1;   
+                                                this.setState({
+                                                    totalGoing: totalGoingGroup,
+                                                    data: response,
+                                                });
+                                            })
+                                    }
+                                }, 3000);
+                            }
+                        })
+                }
+            }
         }
     }
 

@@ -42,7 +42,7 @@ const ListComponent = (props) => {
                             if (el.attends.length !== 0){
                                 el.attends.forEach((el, index) => {
                                     let attendTime = new Date(el.time);
-                                    if (attendTime >= updateTime){
+                                    if (attendTime >= updateTime && el.is_going === true){
                                         totalGoing++;
                                     }
                                 });
