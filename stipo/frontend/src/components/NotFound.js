@@ -5,7 +5,7 @@ import Link from 'react-router-dom/Link';
 
 const NotFound = ({ className }) => {
     return (
-       <div className="ui negative message center">
+       <div className="container">
             <div className="header">404</div>
             <p>Nothing was found here. Go to <Link to="/">main.</Link></p>
         </div> 
