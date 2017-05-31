@@ -1,11 +1,11 @@
 from .base import *
  
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = False
  
 # CHANGE THE ALLOWED_HOSTS LIST TO FIT YOUR NEEDS
-ALLOWED_HOSTS = ['.stipoapp.herokuapp.com', 'localhost', '127.0.0.1', '[::1]']
+ALLOWED_HOSTS = ['.stipo.herokuapp.com', 'localhost', '127.0.0.1', '[::1]']
 
 ADMINS = [(ADMIN_USER, ADMIN_EMAIL)]
 
