@@ -54,6 +54,25 @@ application = DjangoWhiteNoise(application)
 
 **python manage.py runserver --settings=stipo.settings.local** to run local server
 
+**For Production Setup:**
+
+Production:
+
+ - setup the python runtime in runtime.txt
+ - **requirements.txt** takes care of production requirement installs. 
+ - Create env variables in Heroku for variables listed in settings/production.py: EMAIL_USER, EMAIL_PASS, SECRET_KEY, DATABASE_URL, ADMIN_USER, ADMIN_EMAIL, YELP_TOKEN, YELP_SECRET.
+ - Set DJANGO_SETTINGS_MODULE variable on heroku to stipo.settings.production
+ - add production url to ALLOWED_HOSTS.
+ - Set ADMINS emails.
+ - Install postgresql - **heroku addons:create heroku-postgresql:hobby-dev**
+ - After pushing the code to heroku, use
+    - **heroku run python stipo/manage.py migrate --settings=stipo.settings.production** to create the migrations
+    - **heroku run python stipo/manage.py createsuperuser --settings=stipo.settings.production** to create new admin user
+    - For error logs, use **heroku logs**. Emails to admins will be sent if any errors occur. Also, if emails aren't sent, DEBUG setting can be turned on (don't forget to disable it after debugging).
+    - For SMTP Yandex mail was used. 
+
+For admin url, check urls.py file. 
+
 **Tests:**
 
  - stipo/places/tests - for DRF tests
