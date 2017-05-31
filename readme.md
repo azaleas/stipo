@@ -68,6 +68,7 @@ Production:
  - After pushing the code to heroku, use
     - **heroku run python stipo/manage.py migrate --settings=stipo.settings.production** to create the migrations
     - **heroku run python stipo/manage.py createsuperuser --settings=stipo.settings.production** to create new admin user
+	- Create social application via django admin (add heroku domain as new website)
     - For error logs, use **heroku logs**. Emails to admins will be sent if any errors occur. Also, if emails aren't sent, DEBUG setting can be turned on (don't forget to disable it after debugging).
     - For SMTP Yandex mail was used. 
 
