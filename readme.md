@@ -4,3 +4,10 @@
 Single Page Application experiment for gatherings (in restaurants, cafes etc), using Social authentication.
 
 Objective: Create an app where user can select places to go and also see how many people will be coming.
+
+Built with:
+
+ - **Django**
+ - **Django-rest-framework**
+ - **Django allauth + Django rest auth**
+ - **React**

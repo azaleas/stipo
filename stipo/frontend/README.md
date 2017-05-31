@@ -6,5 +6,6 @@ Modules used:
  - **axios** - for API requests.
  - **react-router-dom** - for Routing
  - **query-string** - to parse the URL (used to get variables from GET request)
+ - **material-ui** - for styling
 
 For tests, installed **enzyme**.
