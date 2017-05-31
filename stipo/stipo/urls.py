@@ -21,6 +21,7 @@ from django.conf import settings
 from allauth.socialaccount import providers
 
 from places.api.views import TwitterLogin
+from places.views import FrontendAppView
 
 # http://bit.ly/2p87rHz - removing everything from allauth, except social
 
@@ -38,6 +39,7 @@ urlpatterns = [
     url(r'^auth/', include(providers_urlpatterns)),
     url(r'^rest-auth/', include('rest_auth.urls')),
     url(r'^rest-auth/twitter/$', TwitterLogin.as_view(), name='twitter_login'),
+    url(r'^', FrontendAppView.as_view()),
 ]
 
 if settings.DEBUG:
