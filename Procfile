@@ -1,1 +1,1 @@
-web: gunicorn --pythonpath voting_app stipo.wsgi --log-file -
+web: gunicorn --pythonpath stipo stipo.wsgi --log-file -
