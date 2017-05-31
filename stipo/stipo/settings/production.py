@@ -7,7 +7,7 @@ TEMPLATE_DEBUG = False
 # CHANGE THE ALLOWED_HOSTS LIST TO FIT YOUR NEEDS
 ALLOWED_HOSTS = ['.stipo.herokuapp.com', 'localhost', '127.0.0.1', '[::1]']
 
-ADMINS = [(ADMIN_USER, ADMIN_EMAIL)]
+ADMINS = [(os.environ.get(ADMIN_USER), os.environ.get(ADMIN_EMAIL))]
 
 # Email
 EMAIL_HOST = 'smtp.yandex.ru'
