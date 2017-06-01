@@ -11,7 +11,11 @@ Built with:
  - **Django-rest-framework**
  - **Django allauth + Django rest auth**
  - **React**
- 
+
+For project overview and code details, see [here](https://azaleas.aerobatic.io/2017/06/01/stipo---nigthlife-gatherings-application/).
+
+Hosted on [heroku](https://stipo.herokuapp.com). 
+
 For API endpoints, see [here](https://github.com/azaleas/stipo/blob/master/API.md).
 
 For React readme, see [here](https://github.com/azaleas/stipo/blob/master/stipo/frontend/README.md).
@@ -63,6 +67,7 @@ Production:
  - Create env variables in Heroku for variables listed in settings/production.py: EMAIL_USER, EMAIL_PASS, SECRET_KEY, DATABASE_URL, ADMIN_USER, ADMIN_EMAIL, YELP_TOKEN, YELP_SECRET.
  - Set DJANGO_SETTINGS_MODULE variable on heroku to stipo.settings.production
  - add production url to ALLOWED_HOSTS.
+ - build react with new url (see src/utils/variables.js)
  - Set ADMINS emails.
  - Install postgresql - **heroku addons:create heroku-postgresql:hobby-dev**
  - After pushing the code to heroku, use
