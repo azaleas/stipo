@@ -113,8 +113,6 @@ def query_api(location):
 
     response = search(bearer_token, location)
 
-    print('ddd\n', response)
-
     try:
         if 'LOCATION_NOT_FOUND' in response['error']['code']:
             """
@@ -123,8 +121,8 @@ def query_api(location):
             print('error response:\n', response['error'])
             return "not found"
     except:
+        wrong_city = True
         for business in response['businesses']:
-            wrong_city = True
             if(business['location']['city'].lower() == location.lower()):
                 if wrong_city:
                     wrong_city = False
@@ -137,8 +135,6 @@ def query_api(location):
                     image_url = business['image_url']
                 )
         if wrong_city:
-            print('not found')
             return "not found"
         else:
-            print('success')
             return "success"
