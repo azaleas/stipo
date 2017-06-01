@@ -6,8 +6,8 @@ class Facility(models.Model):
     name = models.CharField(max_length=300)
     rating = models.DecimalField(max_digits=2, decimal_places=1)
     location = models.CharField(max_length=300, db_index = True)
-    url = models.URLField(max_length=200)
-    image_url = models.URLField(max_length=200)
+    url = models.URLField(max_length=400)
+    image_url = models.URLField(max_length=400)
     created_date = models.DateTimeField(auto_now_add=True)
     #Data will be cached for 3 hours.
     updated_date = models.DateTimeField(auto_now=True, db_index=True)
