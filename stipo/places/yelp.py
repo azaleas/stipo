@@ -126,14 +126,26 @@ def query_api(location):
             if(business['location']['city'].lower() == location.lower()):
                 if wrong_city:
                     wrong_city = False
-                Facility.objects.update_or_create(
-                    yelp_id = business['id'],
-                    name = business['name'],
-                    rating = business['rating'],
-                    location = business['location']['city'],
-                    url = business['url'],
-                    image_url = business['image_url']
-                )
+
+                try:
+                    facilityObject = Facility.objects.get(yelp_id=business['id'])
+                    facilityObject.name = business['name']
+                    facilityObject.location = business['location']['city']
+                    facilityObject.rating = business['rating']
+                    facilityObject.url = business['url']
+                    facilityObject.image_url = business['image_url']
+                    facilityObject.save()
+                    
+                except ObjectDoesNotExist:
+                    Facility.objects.create(
+                        yelp_id = business['id'],
+                        name = business['name'],
+                        rating = business['rating'],
+                        location = business['location']['city'],
+                        url = business['url'],
+                        image_url = business['image_url']
+                    )
+
         if wrong_city:
             return "not found"
         else:
